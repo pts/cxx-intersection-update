@@ -78,6 +78,11 @@ static void IntersectionUpdate(const Input &ac, Output *bc) {
 // Template specialization for vector output.
 template<typename Input, typename T>
 static void IntersectionUpdate(const Input &ac, std::vector<T> *bc) {
+#if __cplusplus >= 201103 || __GXX_EXPERIMENTAL_CXX0X__
+  static_assert(std::is_same<typename Input::value_type, T>::value,
+                "the containers passed to IntersectionUpdate() need to "
+                "have the same value_type");
+#endif
   typename Input::const_iterator a = ac.begin();
   const typename Input::const_iterator a_end = ac.end();
   typename std::vector<T>::iterator b = bc->begin();
